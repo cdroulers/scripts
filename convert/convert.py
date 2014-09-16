@@ -9,7 +9,7 @@ path = sys.argv[1] if len(sys.argv) > 1 else "."
 
 for root, dirs, files in os.walk(path):
     for file in files:
-        if file.endswith(".avi"):
+        if file.lower().endswith(".avi"):
             original = os.path.join(root, file)
             backup = os.path.join(root, file + ".bak")
             newName = os.path.join(root, file.replace(".avi", ".mp4"))

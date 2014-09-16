@@ -14,5 +14,6 @@ for root, dirs, files in os.walk(path):
             backup = os.path.join(root, file + ".bak")
             newName = os.path.join(root, file.replace(".avi", ".mp4"))
             print "{0} => {1} => {2}".format(original, backup, newName)
-            subprocess.call(["avconv", "-i", original, "-vcodec", "libx264", "-acodec", "copy", newName])
-            os.rename(original, backup)
+            result = subprocess.call(["avconv", "-i", original, "-vcodec", "libx264", "-acodec", "copy", newName])
+            if result == 0:
+                os.rename(original, backup)

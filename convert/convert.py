@@ -30,7 +30,11 @@ for root, dirs, files in os.walk(args.path):
             tmpFile = os.path.join(root, file.replace(extension, ".tmp" + extension))
             backup = os.path.join(root, file + ".bak")
             newName = os.path.join(root, file.replace(extension, "." + args.container))
-            avconv_call = ["avconv", "-i", original, "-vcodec", args.vcodec, "-acodec", args.acodec, tmpFile]
+            avconv_call = ["avconv", "-i", original, "-vcodec", args.vcodec, "-acodec", args.acodec]
+            if args.acodec == "aac":
+                avconv_call.append("-strict")
+                avconv_call.append("experimental")
+            avconv_call.append(tmpFile)
             result = 0
             if args.what_if:
                 print "    WHATIF: Would call avconv with the following parameters"

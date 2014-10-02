@@ -34,6 +34,9 @@ for root, dirs, files in os.walk(args.path):
             if args.acodec == "aac":
                 avconv_call.append("-strict")
                 avconv_call.append("experimental")
+            if args.container == "mkv":
+                avconv_call.append("-f")
+                avconv_call.append("matroska")
             avconv_call.append(tmpFile)
             result = 0
             if args.what_if:

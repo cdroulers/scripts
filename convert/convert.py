@@ -12,6 +12,7 @@ parser = argparse.ArgumentParser(description="Convert files recursively in a fol
 parser.add_argument("path", help="The path to scan")
 parser.add_argument("-v", "--vcodec", dest="vcodec", default="copy", help="What to do with the video codec. Default is copy.")
 parser.add_argument("-a", "--acodec", dest="acodec", default="copy", help="What to do with the audio codec. Default is copy.")
+parser.add_argument("-ac", "--audiochannels", dest="audio_channels", help="How many channels to convert to. Default is None, which will copy from input.")
 parser.add_argument("-c", "--container", dest="container", default="mkv", help="Which container to output to. Default is mkv.")
 parser.add_argument("-f", "--filter", dest="filter", default="*.*", help="Filter which files to process. Default is *.*.")
 parser.add_argument("-nb", "--nobackup", dest="no_backup", action="store_true", help="Does not backup the file.")
@@ -31,13 +32,20 @@ for root, dirs, files in os.walk(args.path):
             backup = os.path.join(root, file + ".bak")
             newName = os.path.join(root, file.replace(extension, "." + args.container))
             avconv_call = ["avconv", "-i", original, "-vcodec", args.vcodec, "-acodec", args.acodec]
+            if args.audio_channels:
+                avconv_call.append("-ac")
+                avconv_call.append(args.audio_channels)
+
             if args.acodec == "aac":
                 avconv_call.append("-strict")
                 avconv_call.append("experimental")
+
             if args.container == "mkv":
                 avconv_call.append("-f")
                 avconv_call.append("matroska")
+
             avconv_call.append(tmpFile)
+            
             result = 0
             if args.what_if:
                 print "    WHATIF: Would call avconv with the following parameters"

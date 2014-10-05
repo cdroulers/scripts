@@ -28,7 +28,7 @@ for root, dirs, files in os.walk(args.path):
             original = os.path.join(root, file)
             print "Processing file " + original
             fileName, extension = os.path.splitext(original)
-            tmpFile = os.path.join(root, file.replace(extension, ".tmp" + extension))
+            tmpFile = os.path.join(root, file.replace(extension, ".tmp." + args.container))
             backup = os.path.join(root, file + ".bak")
             newName = os.path.join(root, file.replace(extension, "." + args.container))
             avconv_call = ["avconv", "-i", original, "-vcodec", args.vcodec, "-acodec", args.acodec]
